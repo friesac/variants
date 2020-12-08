@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-df = pd.read_parquet("data/2020-10-21_vcf-join.parquet")
+df = pd.read_parquet("../data/2020-10-21_vcf-join.parquet")
 df = df.assign(
     continent=df["continent"].str.strip(),
     gender=df["covv_gender"].str.strip().str.lower().replace({
@@ -82,4 +82,4 @@ pd.get_dummies(
     drop_first=True,
     prefix="",
     prefix_sep="",
-    ).to_parquet("data/2020-10-21_vcf-clean.parquet")
+    ).to_parquet("../data/2020-10-21_vcf-clean.parquet")

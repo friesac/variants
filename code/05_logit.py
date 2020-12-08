@@ -15,7 +15,7 @@ from scipy.stats import chi2_contingency, norm
 
 
 # %% Data
-df = pd.read_parquet(f"data/2020-10-21_vcf-clean.parquet")
+df = pd.read_parquet(f"../data/2020-10-21_vcf-clean.parquet")
 
 df = df.reset_index().drop_duplicates(subset="pid")
 
@@ -41,12 +41,12 @@ X = df.drop([
     'S',
     'V'
 ], axis=1)
-X.assign(y=y).to_csv(f"data/2020-10-21_vcf-model.csv")
+X.assign(y=y).to_csv(f"../data/2020-10-21_vcf-model.csv")
 
 # %% Calculate variable frequency for plotting
 var_freq = X.sum() / len(X)
 var_freq.rename("variant_frequency").to_csv(
-    f"data/2020-10-21_variant-freq.csv"
+    f"../data/2020-10-21_variant-freq.csv"
     )
 
 # %% Fit logistic regression
@@ -57,14 +57,14 @@ indices = model.get_support()
 colnames = X.columns[indices]
 X_new = X.loc[:, indices]
 X_new.assign(y=y).to_csv(
-    f"data/2020-10-21_logistic-regression-lasso-selected-features.csv"
+    f"../data/2020-10-21_logistic-regression-lasso-selected-features.csv"
     )
 
 coef_df = pd.DataFrame(lr.coef_, columns=X.columns)
 ors = coef_df.squeeze().transform("exp")
 ors = ors[ors != 1]
 ors.sort_values().tail(20)
-ors.to_csv(f"data/2020-10-21_odds-ratios.csv")
+ors.to_csv(f"../data/2020-10-21_odds-ratios.csv")
 
 # %% Figure 2: Plot ROC curve
 prefix = f"2020-10-21_vcf_logistic-regression-model"
@@ -106,7 +106,7 @@ for x, s, l in zip([X, X4, X3, X2, X1], suffixes, linestyles):
     lr = LogisticRegression(penalty='l1', solver="liblinear", max_iter=1e4)
     # lr = LogisticRegression(penalty='none', solver="saga", max_iter=1e4, n_jobs=-1)
     lr.fit(X_train, y_train)
-    joblib.dump(lr, f"models/{prefix}_{s}.pickle")
+    joblib.dump(lr, f"../models/{prefix}_{s}.pickle")
     pred = lr.predict(X_test)
     accuracy_score(y_test, pred)
     print(classification_report(y_test, pred))
@@ -144,8 +144,8 @@ for x, s, l in zip([X, X4, X3, X2, X1], suffixes, linestyles):
     plt.plot(fpr, tpr, label=f"{s.replace('-', ', ').title()}", ls=l)
     plt.legend(loc=4)
 
-agrv = joblib.load(f"models/{prefix}_{suffixes[0]}.pickle")
-ag = joblib.load(f"models/{prefix}_{suffixes[3]}.pickle")
+agrv = joblib.load(f"../models/{prefix}_{suffixes[0]}.pickle")
+ag = joblib.load(f"../models/{prefix}_{suffixes[3]}.pickle")
 z = (0.9105254877281309 - 0.6792348437172226) / np.sqrt((0.000092628**2)+(0.017763603**2))
 norm.sf(abs(z))*2  # 9.379754234884466e-39
 
@@ -154,10 +154,10 @@ plt.title("Green/Red Classification Logistic Regression")
 plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.tight_layout()
-plt.savefig(f"plots/{prefix}_{suffixes[0]}.png", dpi=300)
+plt.savefig(f"../plots/{prefix}_{suffixes[0]}.png", dpi=300)
 plt.show()
 
-df["pid"].to_csv(f"data/2020-10-21_pid.txt", index=False)
+df["pid"].to_csv(f"../data/2020-10-21_pid.txt", index=False)
 
 var_df = df.set_index("pid").iloc[:, :-13]
 
@@ -195,4 +195,4 @@ pval_df = pd.DataFrame({
     index=var_df.columns[1:]
     )
 
-pval_df.to_csv(f"data/2020-10-21_p-values.csv")
+pval_df.to_csv(f"../data/2020-10-21_p-values.csv")

@@ -12,7 +12,7 @@ pd.concat([
     ).assign(
         pid=int(''.join(c for c in f.name if c.isdigit()))
     )
-    for f in Path().glob("data/vcf/*.vcf")
+    for f in Path().glob("../data/vcf/*.vcf")
     if f.stat().st_size > 300
     # Save all vcf files with patient ID (pid) column in long format
-]).to_parquet("data/2020-10-21_vcf-long.parquet")
+]).to_parquet("../data/2020-10-21_vcf-long.parquet")

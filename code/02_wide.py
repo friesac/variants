@@ -2,8 +2,8 @@
 import pandas as pd
 
 # %% Split and save data
-df = pd.read_parquet("data/2020-10-21_vcf-long.parquet")
-gr = pd.read_parquet("data/2020-10-21_green-red.parquet")
+df = pd.read_parquet("../data/2020-10-21_vcf-long.parquet")
+gr = pd.read_parquet("../data/2020-10-21_green-red.parquet")
 
 df = df[df.pid.isin(gr.index)]
 df["POS"] = df.POS.fillna(df["    POS"])
@@ -18,4 +18,4 @@ df = df.assign(
     index="pid",
     columns="ref_pos_alt",
     values="ones"
-).to_parquet(f"data/2020-10-21_vcf-wide.parquet")
+).to_parquet(f"../data/2020-10-21_vcf-wide.parquet")
