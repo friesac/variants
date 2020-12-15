@@ -116,13 +116,13 @@ recode_dict = {
     'uncknown': np.nan
 }
 
-pd.DataFrame(recode_dict, index=[0]).T.to_csv("data/2020-10-21_recode.csv")
+pd.DataFrame(recode_dict, index=[0]).T.to_csv("../data/2020-10-21_recode.csv")
 
-with open('data/2020-10-21_gisaid-patient.json') as f:
+with open('../data/2020-10-21_gisaid-patient.json') as f:
     df = pd.DataFrame(json.loads(line) for line in f)
 
 df["covv_patient_status"] = df["covv_patient_status"].str.strip().str.lower()
-df["covv_patient_status"].value_counts().to_csv("data/2020-10-21_status-value-counts.csv")
+df["covv_patient_status"].value_counts().to_csv("../data/2020-10-21_status-value-counts.csv")
 
 df = df.assign(
     is_red=df["covv_patient_status"].map(recode_dict),
@@ -144,6 +144,6 @@ df = df[df["is_red"].ne("excluded") & df["is_red"].notna()]
 cols = ["continent", "country", "region", "city"]
 df[cols] = df["covv_location"].str.split("/", expand=True).iloc[:, :-1]
 
-pd.Series(df.index).to_csv("data/2020-10-21_trimmed-pids.txt")
-df.to_parquet("data/2020-10-21_green-red.parquet")
-df.to_csv("data/2020-10-21_green-red.csv")
+pd.Series(df.index).to_csv("../data/2020-10-21_trimmed-pids.txt")
+df.to_parquet("../data/2020-10-21_green-red.parquet")
+df.to_csv("../data/2020-10-21_green-red.csv")

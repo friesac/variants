@@ -6,7 +6,7 @@ from matplotlib.lines import Line2D
 
 
 # %% Read in cleaned data
-df = pd.read_parquet("data/2020-10-21_vcf-join.parquet")
+df = pd.read_parquet("../data/2020-10-21_vcf-join.parquet")
 df = df.reset_index()
 df['covv_collection_date'] = pd.to_datetime(df['covv_collection_date'], format = '%Y-%m-%d')
 df["day"] = df["covv_collection_date"] - df["covv_collection_date"].min()
@@ -29,7 +29,7 @@ for name, group in plot_df.groupby('Region'):
     plt.legend(handles=legend_elements)
     plt.ylabel("Count")
     plt.xlabel("")
-    plt.savefig(f"plots/{pd.Timestamp.today().date()}_{name}_stacked-area-chart.png", dpi=300)
+    plt.savefig(f"../plots/{pd.Timestamp.today().date()}_{name}_stacked-area-chart.png", dpi=300)
 plot_df["Region"] = plot_df.Region.str.strip()
 # Figure S2
 legend_elements = [
@@ -55,6 +55,4 @@ for name, group in plot_df.groupby('Region'):
     plt.ylabel("Count")
     plt.xlabel("")
     plt.tight_layout()
-    plt.savefig(f"plots/2020-10-21_{name}_fig-s2.png", dpi=300)
-df["continent"].str.lower().str.strip().value_counts()
-df.shape
+    plt.savefig(f"../plots/2020-10-21_{name}_fig-s2.png", dpi=300)

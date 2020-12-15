@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from datetime import date
 
+import tarfile
 
 # Goal of this code is to annotated the variants we identified from previously selected cohorts
 # Steps:
@@ -14,6 +15,10 @@ from datetime import date
 # 5. Filter with SnpSift
 
 # so now the next step is to iterate through the list of chunks and create the multifasta file
+p = Path.home() / "mskar" / "variants" / "data" / "2020-10-21_gisaid-fasta.tar.bz2"
+
+tf = tarfile.open(p)
+tf.extractall()
 
 def write_out_single_fasta(filename, targetdir):
     if not os.path.isdir(targetdir):

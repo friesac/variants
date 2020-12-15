@@ -6,7 +6,7 @@ from matplotlib.lines import Line2D
 from dna_features_viewer import BiopythonTranslator
 
 
-ann = pd.read_csv("data/2020-11-10_SnpEffSnpSift_3612pats.vcf", sep="\t")
+ann = pd.read_csv("../data/2020-11-10_SnpEffSnpSift_3612pats.vcf", sep="\t")
 ann["aa"] = ann["EFF[*].AA"].str.slice(2,).replace({
     "Ala": "A",
     "Arg": "R",
@@ -35,7 +35,7 @@ ann["ref_pos_alt"] = ann["REF"] + ann["POS"].astype(str) + ann["ALT"]
 ann = ann.set_index("ref_pos_alt")
 ann = ann.drop_duplicates()
 
-pval_df = pd.read_csv(f"data/2020-10-21_p-values.csv", index_col=0)
+pval_df = pd.read_csv(f"../data/2020-10-21_p-values.csv", index_col=0)
 
 pval_df = pval_df.assign(
     neg_log10_trend_test_pvalue=-np.log10(pval_df["trend_test_pvalue"]),
@@ -54,7 +54,7 @@ pval_ann["mutation_type"] = pval_ann["EFF[*].EFFECT"].map({
     "disruptive_inframe_deletion": "Deletion"
  })
 
-ors = pd.read_csv("data/2020-10-21_odds-ratios.csv", index_col=0)
+ors = pd.read_csv("../data/2020-10-21_odds-ratios.csv", index_col=0)
 
 ors = ors.drop([
     'age',
@@ -79,11 +79,11 @@ ors_ann["mutation_type"] = ors_ann["EFF[*].EFFECT"].map({
     "disruptive_inframe_deletion": "Deletion"
  })
 
-var = pd.read_csv("data/2020-10-21_variant-freq.csv", index_col=0)
+var = pd.read_csv("../data/2020-10-21_variant-freq.csv", index_col=0)
 var
 df = ors_ann.dropna(subset=["mutation_type"]).join(var)
 df = df[~df.index.duplicated(keep='first')]
-df.to_csv("data/2020-10-21_variants.csv")
+df.to_csv("../data/2020-10-21_variants.csv")
 df["or_lt_two"] = df["odds_ratio"] < 2
 df["or_gt_half"] = df["odds_ratio"] > .5
 
@@ -137,7 +137,7 @@ legend_elements = [
     Line2D([0], [0], marker='s', color='w', label='Silent', markerfacecolor='orange', markersize=7),
 ]
 
-record = BiopythonTranslator().translate_record("data/NC_045512.2.gb")
+record = BiopythonTranslator().translate_record("../data/NC_045512.2.gb")
 for f in record.features[3:34]:
     record.features.remove(f)
 for f in record.features[5:24:2]:
@@ -199,7 +199,7 @@ ax1.legend(
     )
 ax0.legend().remove()
 plt.savefig(
-    f"plots/2020-10-21_all-variants_pval-vs-var-pos.png",
+    f"../plots/2020-10-21_all-variants_pval-vs-var-pos.png",
     dpi=300,
     bbox_inches = 'tight',
     pad_inches = 0.1
@@ -236,7 +236,7 @@ plt.yticks(
     ("0.0156", "0.0625", "0.25", "1", "4", "16", "32", "64")
     )
 plt.tight_layout()
-plt.savefig(f"plots/2020-10-21_all-variants_or-vs-var-freq.png", dpi=300)
+plt.savefig(f"../plots/2020-10-21_all-variants_or-vs-var-freq.png", dpi=300)
 plt.show()
 
 fig, (ax1, ax2) = plt.subplots(
@@ -284,7 +284,7 @@ box.y0 += .005
 box.y1 += .005
 ax2.set_position(box)
 plt.savefig(
-    f"plots/2020-10-21_all-variants_or-vs-var-pos.png",
+    f"../plots/2020-10-21_all-variants_or-vs-var-pos.png",
     dpi=300,
     bbox_inches = 'tight',
     pad_inches = 0.1

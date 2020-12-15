@@ -4,7 +4,7 @@ import pandas as pd
 import seaborn as sns
 
 # %% Read in outcomes data
-df = pd.read_csv("data/2020-10-21_green-red.csv", index_col=0)
+df = pd.read_csv("../data/2020-10-21_green-red.csv", index_col=0)
 
 # Figure S1
 df["covv_patient_status"] = df["covv_patient_status"].str.lower().str.strip()
@@ -26,5 +26,6 @@ plt.xlabel("Patient Count")
 plt.ylabel("Status")
 plt.title("Patient count by status")
 plt.tight_layout()
-plt.savefig(f"plots/2020-10-21_fig-s1.png", dpi=300)
+plt.savefig(f"../plots/2020-10-21_fig-s1.png", dpi=300)
 plt.show()
+df["continent"].str.strip().value_counts()
